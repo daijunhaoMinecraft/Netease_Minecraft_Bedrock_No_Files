@@ -21,3 +21,8 @@
 <br />勾选第二个选项的效果<br />
 ![image](https://github.com/daijunhaoMinecraft/Netease_Minecraft_Bedrock_No_Files/assets/121751847/822ffec8-5de0-4ec9-b925-f62496077fea)
 <br />![image](https://github.com/daijunhaoMinecraft/Netease_Minecraft_Bedrock_No_Files/assets/121751847/6a37713a-26b8-490b-97a9-db4e5bbc5d6a)
+<br />
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=daijunhaoMinecraft/Netease_Minecraft_Bedrock_No_Files&type=Date)](https://star-history.com/#daijunhaoMinecraft/Netease_Minecraft_Bedrock_No_Files&Date)
+
