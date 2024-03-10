@@ -1,0 +1,147 @@
+{
+	"materials": {
+		"version": "1.0.0",
+		"entity_static_netease": {
+			"vertexShader": "shaders/entity.vertex",
+			"vrGeometryShader": "shaders/entity.geometry",
+			"fragmentShader": "shaders/entity.fragment",
+			"vertexFields": [
+				{
+					"field": "Position"
+				},
+				{
+					"field": "Normal"
+				},
+				{
+					"field": "UV0"
+				}
+			],
+			"variants": [
+				{
+					"skinning": {
+						"+defines": [
+							"USE_SKINNING"
+						],
+						"vertexFields": [
+							{
+								"field": "Position"
+							},
+							{
+								"field": "BoneId0"
+							},
+							{
+								"field": "Normal"
+							},
+							{
+								"field": "UV0"
+							}
+						]
+					}
+				},
+				{
+					"skinning_color": {
+						"+defines": [
+							"USE_SKINNING",
+							"USE_OVERLAY"
+						],
+						"+states": [
+							"Blending"
+						],
+						"vertexFields": [
+							{
+								"field": "Position"
+							},
+							{
+								"field": "BoneId0"
+							},
+							{
+								"field": "Color"
+							},
+							{
+								"field": "Normal"
+							},
+							{
+								"field": "UV0"
+							}
+						]
+					}
+				}
+			],
+			"msaaSupport": "Both",
+			"+samplerStates": [
+				{
+					"samplerIndex": 0,
+					"textureFilter": "Point"
+				}
+			],
+			"+defines": [
+				"USE_OVERLAY"
+			]
+		},
+		"entity_nocull_netease:entity_static_netease": {
+			"+states": [
+				"DisableCulling"
+			]
+		},
+		"entity_alphatest_netease:entity_nocull_netease": {
+			"+defines": [
+				"ALPHA_TEST"
+			],
+			"+samplerStates": [
+				{
+					"samplerIndex": 1,
+					"textureWrap": "Repeat"
+				}
+			],
+			"msaaSupport": "Both"
+		},
+		"map_netease:entity_alphatest_netease": {
+			"vertexFields": [
+				{
+					"field": "Position"
+				},
+				{
+					"field": "Color"
+				},
+				{
+					"field": "Normal"
+				},
+				{
+					"field": "UV0"
+				}
+			],
+			"variants": [
+				{
+					"skinning": {
+						"+defines": [
+							"USE_SKINNING"
+						],
+						"vertexFields": [
+							{
+								"field": "Position"
+							},
+							{
+								"field": "BoneId0"
+							},
+							{
+								"field": "Color"
+							},
+							{
+								"field": "Normal"
+							},
+							{
+								"field": "UV0"
+							}
+						]
+					}
+				}
+			]
+		},
+		"netease_map_backgroud:map_netease": {
+			"depthBias": 100.0,
+			"depthBiasOGL": -1.0,
+			"slopeScaledDepthBias": 0.1,
+			"slopeScaledDepthBiasOGL": -1.0
+		}
+	}
+}

@@ -9,36 +9,43 @@ import shutil
 pathx = os.path.dirname(os.path.abspath(__file__))
 
 def copy_and_replace(source_folder, destination_folder):
-    if not os.path.exists(destination_folder):
-        os.makedirs(destination_folder)
+    try:
+        if not os.path.exists(destination_folder):
+            os.makedirs(destination_folder)
 
-    def copy_files(src, dst):
-        for item in os.listdir(src):
-            s = os.path.join(src, item)
-            d = os.path.join(dst, item)
-            if os.path.isdir(s):
-                if not os.path.exists(d):
-                    os.makedirs(d)
-                with concurrent.futures.ThreadPoolExecutor() as executor:
-                    executor.submit(copy_files, s, d)  # 在创建新的线程池中执行复制文件操作
-            else:
-                shutil.copy2(s, d)
+        def copy_files(src, dst):
+            for item in os.listdir(src):
+                s = os.path.join(src, item)
+                d = os.path.join(dst, item)
+                if os.path.isdir(s):
+                    if not os.path.exists(d):
+                        os.makedirs(d)
+                    with concurrent.futures.ThreadPoolExecutor() as executor:
+                        executor.submit(copy_files, s, d)  # 在创建新的线程池中执行复制文件操作
+                else:
+                    shutil.copy2(s, d)
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        executor.submit(copy_files, source_folder, destination_folder)
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.submit(copy_files, source_folder, destination_folder)
 
-    executor.shutdown()  # 清理资源
+        executor.shutdown()  # 清理资源
+        return f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}修改成功!\n"
+    except Exception:
+        return f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}修改失败!\n"
 
 def delete_folder_content(folder_path):
-    for file_name in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, file_name)
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-        elif os.path.isdir(file_path):
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                executor.submit(delete_folder_content, file_path)
-            os.rmdir(file_path)
-
+    try:
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+            elif os.path.isdir(file_path):
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    executor.submit(delete_folder_content, file_path)
+                os.rmdir(file_path)
+        return f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}删除目录成功!\n"
+    except Exception:
+        return f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}删除目录失败!\n"
 class Frame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, title='网易我的世界基岩版去除网易无用文件--节省空间占用 By:daijunhao 仅供学习交流,严禁用于商业用途,请于24小时内删除', size=(1000, 700),name='frame',style=541072384)
@@ -101,31 +108,36 @@ class Frame(wx.Frame):
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}出现错误:你已经执行过了\n")
                 else:
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\textures\\ui\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\textures\\ui")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\textures\\ui"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\textures\\sfxs\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\textures\\sfxs")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\textures\\sfxs"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\textures\\models\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\textures\\models")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\textures\\models"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\models\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\models")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\models"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\shaders\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\shaders")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\shaders"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\render_controllers\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\render_controllers")
-                    self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\texts\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\texts")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\render_controllers"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\particles\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\particles")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\particles"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\materials\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\materials")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\materials"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\graphics_settings\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\graphics_settings")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\graphics_settings"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\animation_controllers\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\animation_controllers")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\animation_controllers"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\animations\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\animations")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\animations"))
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除文件夹:{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\effects\\*.*\n")
-                    delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\effects")
+                    self.Debug.AppendText(delete_folder_content(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\effects"))
+                    self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在修复地图文件\n")
+                    self.Debug.AppendText(copy_and_replace(f"{pathx}\\vanilla_netease_fix_map",f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease"))
+                    self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在删除部分无效文件\n")
+                    debug_del = os.popen(f"del /f /s /q {windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\language_names.json").read()
+                    self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}{debug_del}\n")
+                    debug_del = os.popen(f"del /f /s /q {windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\languages.json").read()
+                    self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}{debug_del}\n")
                     self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}完成,正在修改contents.json文件\n")
                     with open(f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla_netease\\contents.json",mode="w",encoding="utf-8") as f:
                         f.write("")
@@ -140,7 +152,7 @@ class Frame(wx.Frame):
             self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}--------网易我的世界标题修改--------\n")
             self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}当前正在执行命令:去除网易我的世界多余文件\n")
             if os.path.exists(f"{windowsmc_path}\\windowsmc"):
-                copy_and_replace(f"{pathx}\\vanilla_Minecraft_icon", f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla")
+                self.Debug.AppendText(copy_and_replace(f"{pathx}\\vanilla_Minecraft_icon", f"{windowsmc_path}\\windowsmc\\data\\resource_packs\\vanilla"))
                 self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}Done!\n")
             else:
                 self.Debug.AppendText(f"{datetime.datetime.now().strftime('[date:%Y-%m-%d time:%H:%M:%S]')}出现错误:未检测到网易我的世界基岩版文件(windowsmc文件)请检查你是否安装了网易我的世界基岩版\n")
